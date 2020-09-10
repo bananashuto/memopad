@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>i-conte</title>
+<script src="js/jquery-2.1.3.min.js"></script>
+<script src="javascript/dragdrop.js"></script>
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <div class="wapper">
+<!-- ーーーーーーーーhedderーーーーーーー -->       
+        <header>
+            <div class="hedderWrapper" >
+                <h1>i-conte</h1>
+                <ul class="hedderbox">
+                    <!-- <li>コピーをつくる</li>
+                    <li>コンテをつくる</li>
+                    <li>ストックをみる</li> -->
+                </ul>
+            </div>
+        </header>
+    <!-- ーーーーーーーーmainーーーーーーー -->
+        <main>
+            <h2>コピーをつくろう！</h2>
+            <div class="mainContent">
+            <!-- タイトル -->
+                <div class="TextCenter">
+                    <input type="text" id="title" placeholder="タイトル" >
+                </div>
+            <!-- 1行目 -->
+                <div id="sentenceContent">
+                    <img src="img/plus.png" class="plusmark" id="plus" alt="" width="35px" height="35px">
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence" placeholder="キャッチコピー"></textarea>
+                    </div>
+                    <img src="img/minus.png"  id="minus" alt="" width="35px" height="35px">
+                </div> 
+            <!-- 2行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence2" placeholder="〇〇な時、"></textarea>
+                    </div>
+             <!-- 3行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence3" placeholder="〇〇ってとっても不便..."></textarea>
+                    </div>
+            <!-- 4行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence4" placeholder="そんな時は、〇〇！"></textarea>
+                    </div>
+            <!-- 5行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence5" placeholder="〇〇なら、いつでも〇〇できて"></textarea>
+                    </div>
+            <!-- 6行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence6" placeholder="月々たったの〇〇円！！"></textarea>
+                    </div>
+            <!-- 7行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence7" placeholder="さぁ、今すぐ検索！"></textarea>
+                    </div>
+            <!-- 8行目 -->
+                    <div class="TextCenter">
+                        <textarea name="" id="sentence8" placeholder="サービス名"></textarea>
+                    </div>
+
+            <!-- センテンス追加(実験中) -->
+                <div id="tuika"></div>
+            </div>           
+        </main>
+
+
+    <!-- ーーーーーーーー 下ボタン ーーーーーーー -->
+        <section class="selectwrapper">
+            <ul class="select">
+                <li id="save">保存する</li>
+                <li id="clear">クリアする</li>
+                <li id="empty">全て削除する</li>
+            </ul>
+            <div id="econte">絵コンテを作る</div>
+        </section>
+
+
+    <!-- ーーーーーーーー 保存したもの ーーーーーーー -->   
+       <div id="stock">
+            <div id="list">
+            <!-- ここに表示 -->
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- ーーーーーーーjavascript--------- -->
+<!-- ーーーーーーーjavascript--------- -->
+<!-- ーーーーーーーjavascript--------- -->   
+<script> 
+// <!-- -----ローカルストレージ----- -->      
+$('#save').on("click", function(){
+  const title = $("#title").val();
+  const sentence = $("#sentence").val();
+  const sentence2 = $("#sentence2").val();
+  const sentence3 = $("#sentence3").val();
+  const sentence4 = $("#sentence4").val();
+  const sentence5 = $("#sentence5").val();
+  const sentence6 = $("#sentence6").val();
+  const sentence7 = $("#sentence7").val();
+  const sentence8 = $("#sentence8").val();
+  var data = [sentence,sentence2,sentence3,sentence4,sentence5,sentence6,sentence7,sentence8];
+  localStorage.setItem('json', JSON.stringify(data));
+  var data = localStorage.getItem('json');
+  data = JSON.parse(data);
+  for (var i = 0; i < data.length; i++) {
+  for (var key in data[i]) {
+    console.log(data[i][key]);
+  }
+};
+
+// <!-- -----ローカルストレージから取り出し----- -->  
+  const html = '<div id="stocknote"><p id="stocktitle">'+title+'<ul><li>'+sentence+'</li><li>'+sentence2+'</li><li>'+sentence3+'</li><li>'+sentence4+'</li><li>'+sentence5+'</li><li>'+sentence6+'</li><li>'+sentence7+'</li><li>'+sentence8+'</li></ul></div>';
+  $('#list').prepend(html);
+//   alert("保存完了！")
+});
+
+
+
+// <!-- -----クリアボタン----- --> 
+$("#clear").on("click",function(){
+    localStorage.clear();
+    $("#title,#sentence,#sentence2,#sentence3,#sentence4,#sentence5,#sentence6,#sentence7,#sentence8").val(""); //テキストエリアが空白になる
+});
+
+// <!-- -----全て削除----- --> 
+$("#empty").on("click",function(){
+    localStorage.clear();
+    $("#list").empty();
+});
+
+
+
+
+// <!-- -----動作----- --> 
+   // <!--プラスマーク出現-->  
+   $("#minus").hover(function(){
+            $(this).css('opacity', '1');
+        }, function() {
+            $(this).css('opacity', '0.03');
+        });
+    // <!--マイナスマーク出現-->  
+        $("#plus").hover(function(){
+            $(this).css('opacity', '1');
+        }, function() {
+            $(this).css('opacity', '0.03');
+        });
+    // <!--「保存する」HOVER-->  
+            $("#save").hover(function(){
+            $(this).css('background-color', '#ff2b52');
+            $(this).css('color', '#ffffff');
+        }, function() {
+            $(this).css('background-color', '#FEF200');
+            $(this).css('color', '#000000');
+        });
+    // <!--「絵コンテをつくる」HOVER-->  
+            $("#clear").hover(function(){
+            $(this).css('background-color', '#ff2b52');
+            $(this).css('color', '#ffffff');
+        }, function() {
+            $(this).css('background-color', '#FEF200');
+            $(this).css('color', '#000000');
+        });
+    // <!--全て削除HOVER-->  
+            $("#empty").hover(function(){
+            $(this).css('background-color', '#ff2b52');
+            $(this).css('color', '#ffffff');
+        }, function() {
+            $(this).css('background-color', '#FEF200');
+            $(this).css('color', '#000000');
+        });
+    // <!--「絵コンテをつくる」HOVER-->  
+           $("#econte").hover(function(){
+            $(this).css('background-color', '#ff2b52');
+            $(this).css('color', '#ffffff');
+        }, function() {
+            $(this).css('background-color', '#FEF200');
+            $(this).css('color', '#000000');
+        });
+
+
+
+
+// <!-- -----テキストエリアの追加(実験中)----- -->  
+let plus= document.getElementById("plus");//ボタンをクリックしたときに実行(イベントリスナー使用：ie9は以上で動作)
+$("#plus").on("click", function(){//idが「boxes」の要素を取得
+let sentence = document.getElementById("sentence");//「boxes」の要素の先頭にある子要素を複製（コピー）
+let clone = sentence.cloneNode(true);//「boxes」の要素の最後尾に複製した要素を追加
+tuika.append(clone); 
+});
+
+
+let minus= document.getElementById("minus");//ボタンをクリックしたときに実行(イベントリスナー使用：ie9は以上で動作)
+$("#minus").on("click", function(){//idが「boxes」の要素を取得
+let sentence = document.getElementById("sentence");//「boxes」の要素の先頭にある子要素を複製（コピー）
+let clone = sentence.cloneNode(true);//「boxes」の要素の最後尾に複製した要素を追加
+tuika.remove(clone); 
+});
+
+
+</script>
+</body>
+</html>
